@@ -32,7 +32,7 @@ const PlaybackTimeStamp = (props) => {
   };
 
   /* 
-    the 'call' statements below binds 'this' to the Player class
+    the 'call' statements below binds 'this' to the AudioPlayer class
     I used this technique vice pulling out the relevant functions becasue
     I  knew that would work, and didn't want to incur risk by
     deviating from Expo's example too much

@@ -3,20 +3,37 @@ const concat = require('gulp-concat');
 const jeditor = require('gulp-json-editor');
 const bump = require('gulp-bump');
 const run = require('gulp-run');
+const replace = require('gulp-string-replace');
 
+// required to fix jest based on this Expo GitHubIssue:
+// https://github.com/expo/expo/issues/2921
+gulp.task('fix', function(done) {
+  gulp
+    .src(['./node_modules/jest-expo/bin/jest.js']) // Any file globs are supported
+    .pipe(
+      replace(
+        new RegExp(/.*childProcess.spawnSync.*\n/, 'g'),
+        "const result = childProcess.spawnSync('node', [jestProgramPath, jestProgramArgs], { stdio: 'inherit' });"
+      )
+    )
+    .pipe(gulp.dest('./node_modules/jest-expo/bin/'));
+  done();
+});
 
 // dependencies for npm publishing
 const npmDeps = {
-    "prop-types": "15.6.1",
-    "react-native-blink-view": "0.0.6",
-    "native-base": "2.8.0"
+  'prop-types': '15.6.1',
+  'react-native-blink-view': '0.0.6',
+  'native-base': '2.8.0'
 };
 
 // additional dependencies for expo app
 const expoDeps = {
-  "expo": "^31.0.4",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz"
+  expo: '^31.0.4',
+  react: '16.5.0',
+  'react-native':
+    'https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz',
+  'react-navigation': '^2.18.2'
 };
 
 // main for npm publishing
@@ -40,8 +57,6 @@ gulp.task('forNPM', (done) => {
     .pipe(gulp.dest('./'));
   done();
 });
-
-
 
 gulp.task('npm-publish', () => {
   return run('npm publish').exec();
@@ -81,8 +96,6 @@ gulp.task('forExpo', (done) => {
   done();
 });
 
-
-
 gulp.task(
   'prod',
   gulp.series(
@@ -91,7 +104,7 @@ gulp.task(
       gulp.series('git-add', 'git-commit', 'git-push'),
       'npm-publish'
     ),
-    'forExpo',
+    'forExpo'
   )
 );
 
@@ -103,7 +116,7 @@ gulp.task(
       gulp.series('git-add', 'git-commit', 'git-push-beta'),
       'npm-publish-beta'
     ),
-    'forExpo',
+    'forExpo'
   )
 );
 
@@ -115,6 +128,6 @@ gulp.task(
       gulp.series('git-add', 'git-commit', 'git-push'),
       'npm-publish'
     ),
-    'forExpo',
+    'forExpo'
   )
 );

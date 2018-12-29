@@ -1,8 +1,8 @@
 // import 'expo';
-import Recorder from './Recorder';
-import Player from './Player';
+import AudioRecorder from './AudioRecorder';
+import AudioPlayer from './AudioPlayer';
 
 module.exports = {
-    Player,
-    Recorder
+    AudioPlayer,
+    AudioRecorder
 };

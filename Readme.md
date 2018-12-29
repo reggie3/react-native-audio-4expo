@@ -1,4 +1,4 @@
-# React Native Sound Audio Player Recorder No Linking
+# React Native Sound Audio AudioPlayer AudioRecorder No Linking
 
 ## This package provide audio recorder and player components that you can drop into your application.  It does not require linking to native code, so it is suitable for React Native applications built using Expo.
 
@@ -6,10 +6,10 @@
 
 This module makes extensive use of the Expo.io Audio SDK located [here](https://docs.expo.io/versions/latest/sdk/audio.html).  It includes a sensible set of audio setup defaults, but can be customized using the information contained in the expo.io documentation.
 
-[![npm](https://img.shields.io/npm/v/react-native-audio-player-recorder-no-linking.svg)](https://www.npmjs.com/package/react-native-audio-player-recorder-no-linking)
-[![npm](https://img.shields.io/npm/dm/react-native-audio-player-recorder-no-linking.svg)](https://www.npmjs.com/package/react-native-audio-player-recorder-no-linking)
-[![npm](https://img.shields.io/npm/dt/react-native-audio-player-recorder-no-linking.svg)](https://www.npmjs.com/package/react-native-audio-player-recorder-no-linking)
-[![npm](https://img.shields.io/npm/l/react-native-audio-player-recorder-no-linking.svg)](https://github.com/react-native-component/react-native-audio-player-recorder-no-linking/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/react-native-audio-4expo.svg)](https://www.npmjs.com/package/react-native-audio-4expo)
+[![npm](https://img.shields.io/npm/dm/react-native-audio-4expo.svg)](https://www.npmjs.com/package/react-native-audio-4expo)
+[![npm](https://img.shields.io/npm/dt/react-native-audio-4expo.svg)](https://www.npmjs.com/package/react-native-audio-4expo)
+[![npm](https://img.shields.io/npm/l/react-native-audio-4expo.svg)](https://github.com/react-native-component/react-native-audio-4expo/blob/master/LICENSE)
 
 ## Why Use This?
 
@@ -21,18 +21,18 @@ You are not restricted from using native code, and can find a better module to u
 
 ## Installation
 
-`npm install --save react-native-audio-player-recorder-no-linking`
+`npm install --save react-native-audio-4expo`
 
 ## Usage
 
-`import {Recorder, Player} from 'react-native-audio-player-recorder-no-linking';`
+`import {AudioRecorder, AudioPlayer} from 'react-native-audio-4expo';`
 
 ### Example
 
-#### Recorder
+#### AudioRecorder
 
 ```javascript
- <Recorder
+ <AudioRecorder
     style={{ flex: 1 }}
     onComplete={this.recorderComplete}
     maxDurationMillis={150000}
@@ -117,10 +117,10 @@ The onComplete callback receives an object similiar to the following
 
 <pre>allowsRecordingIOS:true<br>interruptionModeIOS:<br>Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,<br>playsInSilentModeIOS: true,<br>playsInSilentLockedModeIOS: true,<br>shouldDuckAndroid: true,<br>interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX</pre>
 
-#### Player
+#### AudioPlayer
 
 ```javascript
- <Player
+ <AudioPlayer
     style={{ flex: 1 }}
     onComplete={this.playerComplete.bind(this)}
     completeButtonText={'Return Home'}
@@ -155,7 +155,7 @@ The onComplete callback receives an object similiar to the following
 
 ### Customize the UI
 
-The Record and Play buttons badges can be customized by altering the package's GetRecordButtonByStatus and GetPlayButtonByStatus files.  Both of these files return default components displayed by the Recorder and Player components, respectively.  The default UI components make use of the UI Kitten library for buttons and FontAwesome for icons.
+The Record and Play buttons badges can be customized by altering the package's GetRecordButtonByStatus and GetPlayButtonByStatus files.  Both of these files return default components displayed by the AudioRecorder and AudioPlayer components, respectively.  The default UI components make use of the UI Kitten library for buttons and FontAwesome for icons.
 
 ## Changelog
 
