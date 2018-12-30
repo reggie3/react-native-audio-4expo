@@ -29,9 +29,9 @@ class HomeScreen extends React.Component {
       audioInfo: 'Audio File Info Will Appear Here',
       isAudioReady: false
     };
-    this.props.navigation.navigate('RecordAudioScreen', {
+    /* this.props.navigation.navigate('RecordAudioScreen', {
      audioInfo: this.state.audioInfo
-    }); 
+    });  */
   }
 
   componentDidUpdate = (prevProps, prevState) => {

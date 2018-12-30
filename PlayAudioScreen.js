@@ -89,234 +89,45 @@ class PlayAudioScreen extends React.Component {
     }
   };
 
-  toggleFullScreenCallback = () => {
-    this.setState({ isFullScreen: !this.state.isFullScreen }, () => {
-      console.log({ isFullScreen: this.state.isFullScreen });
-    });
-  };
-
   onAudioPlayerError = (error) => {
     console.log({ error });
   };
 
-  renderPlayer = (uri) => {
-    return (
-      <View style={{ flex: 1 }}>
-        {this.state.isFullScreen ? null : (
-          <View
-            style={{
-              flex: 1,
-              display: 'flex',
-              backgroundColor: '#E5CCFF',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Text>Boundary Area</Text>
-          </View>
-        )}
-        <View
-          style={{
-            backgroundColor: 'black',
-            padding: 15,
-            display: 'flex',
-            flex: 2
-          }}
-        >
-          <AudioPlayer
-            source={{
-              uri: this.props.navigation.state.params.audioInfo.uri
-            }} 
-            useNativeControls={true}
-            resizeMode={Audio.RESIZE_MODE_CONTAIN} 
-            positionMillis={1500}
-            isLooping={true}
-            debug={false}
-            onError={this.onAudioPlayerError}
-            toggleFullScreenCallback={(isFullScreen) => {
-              console.log({ isFullScreen });
-            }}
-            playCompleteCallback={() => {
-              console.log('play complete');
-            }}
-            onLoadStart={() => {
-              console.log('onLoadStart');
-            }}
-            onLoad={(playbackStatus) => {
-              console.log('onLoad', playbackStatus);
-            }}
-            onReadyForDisplayCallback={(audioInfo) => {
-              console.log('audio ready for display: ', audioInfo);
-            }}
-            onPlaybackStatusUpdateCallback={(playbackStatus) => {
-              // console.log({playbackStatus});
-            }}
-             playButton={(renderProps) => {
-              return (
-                <Button
-                  onPress={renderProps.onPress}
-                  success
-                  style={bigButtonStyle}
-                >
-                  <Icon
-                    type="FontAwesome"
-                    name="play"
-                    color="white"
-                    style={{ fontSize: ICON_SIZE }}
-                  />
-                </Button>
-              );
-            }}
-            pauseButton={(renderProps) => {
-              return (
-                <Button
-                  success
-                  style={bigButtonStyle}
-                  onPress={renderProps.onPress}
-                >
-                  <Icon
-                    type="FontAwesome"
-                    name="pause"
-                    color="white"
-                    style={{ fontSize: ICON_SIZE }}
-                  />
-                </Button>
-              );
-            }}
-            fastForwardButton={(renderProps) => {
-              return (
-                <Button
-                  onPress={renderProps.onPress}
-                  success
-                  style={buttonStyle}
-                >
-                  <Icon
-                    type="FontAwesome"
-                    name="forward"
-                    color="white"
-                    style={{ fontSize: ICON_SIZE - 10 }}
-                  />
-                </Button>
-              );
-            }}
-            rewindButton={(renderProps) => {
-              return (
-                <Button
-                  onPress={renderProps.onPress}
-                  success
-                  style={buttonStyle}
-                >
-                  <Icon
-                    type="FontAwesome"
-                    name="backward"
-                    color="white"
-                    style={{ fontSize: ICON_SIZE - 10 }}
-                  />
-                </Button>
-              );
-            }}
-            repeatAudioButton={(renderProps) => {
-              return (
-                <Button
-                  onPress={renderProps.onPress}
-                  success
-                  style={bigButtonStyle}
-                >
-                  <Icon
-                    type="FontAwesome"
-                    name="fast-backward"
-                    color="white"
-                    style={{ fontSize: ICON_SIZE }}
-                  />
-                </Button>
-              );
-            }}
-            playbackSlider={(renderProps) => {
-              return (
-                <Slider
-                  minimumValue={renderProps.minimumValue}
-                  maximumValue={renderProps.maximumValue}
-                  value={renderProps.value}
-                  onSlidingComplete={renderProps.onSlidingComplete}
-                  onValueChange={renderProps.onValueChange}
-                  disabled={renderProps.disabled}
-                />
-              );
-            }}
-            showTimeStamp={true}
-            timeStamp={(renderProps) => {
-              return (
-                <View
-                  style={{ background: 'rgba(0,0,0,.5)', marginHorizontal: 5 }}
-                >
-                  <Text style={{ color: 'white', fontSize: 20 }}>
-                    {renderProps.value}
-                  </Text>
-                </View>
-              );
-            }}
-            fullScreenButton={(renderProps) => {
-              return (
-                <TouchableOpacity
-                  onPress={renderProps.onPress}
-                  style={smallButtonStyle}
-                >
-                  <Icon
-                    type="Ionicons"
-                    name="expand"
-                    style={{ fontSize: 20, color: 'white' }}
-                  />
-                </TouchableOpacity>
-              );
-            }} 
-          />
-        </View>
-        {this.state.isFullScreen ? null : (
-          <View
-            style={{
-              flex: 1,
-              display: 'flex',
-              backgroundColor: 'rgba(255,255,255,.5)',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: 5
-            }}
-          >
-            <Text>Boundary Area</Text>
-            <Button
-              success
-              block
-              onPress={() => {
-                this.props.navigation.navigate('HomeScreen');
-              }}
-            >
-              <Text>Go to HomeScreen</Text>
-            </Button>
-          </View>
-        )}
-      </View>
-    );
-  };
-  render() {
-    const { navigation } = this.props;
-    const audioInfo = navigation.getParam('audioInfo', null);
-    console.log(audioInfo);
+  onCloseAudioPlayer=()=>{
+      this.props.navigation.goBack()
+  }
+
+  render = () => {
+    
     return (
       <Container
         style={{
           backgroundColor: `${BACKGROUND_COLOR}`
         }}
       >
-        {audioInfo !== null ? (
-          this.renderPlayer(audioInfo.uri)
-        ) : (
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
-        )}
-      </Container>
+        <AudioPlayer
+         /* source={{
+            uri: this.state.audioInfo.uri
+          }}  */
+          debug={true}
+        closeAudioPlayerButton={(renderProps) => {
+            return (
+              <Button
+                onPress={() => {
+                  renderProps.onPress();
+                  this.onCloseAudioPlayer(renderProps.audioInfo);
+                }}
+                disabled={renderProps.isRecording}
+                block
+                info={!renderProps.isRecording}
+                style={{ margin: 5 }}
+                onError={this.onAudioPlayerError}
+              >
+                <Text>Go Back</Text>
+              </Button>
+            );
+          }}/>
+        </Container>
     );
   }
 }

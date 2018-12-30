@@ -20,7 +20,7 @@ const RootStack = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'HomeScreen',
+    initialRouteName: 'PlayAudioScreen',
     navigationOptions: {
       title: 'Audio 4Expo Demo',
       headerStyle: {

@@ -84,6 +84,7 @@ class RecordAudioScreen extends React.Component {
           }}
           showRecorderTimer={true}
           showPlaybackTimer={true}
+          debug={true}
           /* permissionsAlert={{
           display: true,
           title:  'Permissions Required',
