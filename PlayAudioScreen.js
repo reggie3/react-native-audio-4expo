@@ -6,8 +6,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { AudioPlayer } from './index';
-import { Text, Button, Container, Icon } from 'native-base';
-import { Audio, ScreenOrientation } from 'expo';
+import { Text, Button, Container } from 'native-base';
 import { withNavigation } from 'react-navigation';
 
 const random_rgba = () => {
@@ -28,35 +27,6 @@ const random_rgba = () => {
 };
 
 const BACKGROUND_COLOR = random_rgba();
-const ICON_SIZE = 40;
-
-const buttonTemplate = {
-  alignSelf: 'center',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-};
-
-const bigButtonStyle = {
-  ...buttonTemplate,
-  width: 72,
-  height: 72,
-  borderRadius: 36
-};
-
-const buttonStyle = {
-  ...buttonTemplate,
-  width: 64,
-  height: 64,
-  borderRadius: 32
-};
-
-const smallButtonStyle = {
-  ...buttonTemplate,
-  width: 24,
-  height: 24,
-  borderRadius: 12
-};
 
 class PlayAudioScreen extends React.Component {
   constructor(props) {
@@ -65,52 +35,63 @@ class PlayAudioScreen extends React.Component {
       isFullScreen: false,
       audioInfo: {}
     };
-    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
     console.log('PlayAudioScreen initialized');
   }
 
-  componentDidUpdate = (prevProps, prevState) => {
+  componentDidMount = () => {
+    console.log('========== componentDidMount PlayAudioScreen ============');
+    console.log(this.props);
+    console.log('componentDidMount navigation: ', this.props.navigation);
+    this.setState({ audioInfo: this.props.navigation.state.params.audioInfo });
+  };
+
+  /*  TODO: I think this can be removed
+ componentDidUpdate = (prevProps, prevState) => {
+    console.log('========== componentDidUpdate PlayAudioScreen ============');
+    console.log(this.props);
     console.log('componentDidUpdate navigation: ', this.props.navigation);
-    if (
+    debugger;
+    if 
       (this.props.navigation.state.params &&
         this.props.navigation.state.params.audioInfo &&
-        !prevProps.navigation.state.params) ||
-      (this.props.navigation.state.params &&
-        this.props.navigation.state.params.audioInfo &&
-        this.props.navigation.state.params.audioInfo !==
-          prevProps.navigation.state.params.audioInfo)
-    ) {
+        !prevState.audioInfo)  {
       console.log('player received audio');
       console.log(this.props.navigation.state.params.audioInfo);
-      this.setState({
-        audioInfo: this.props.navigation.state.params.audioInfo,
-        isAudioReady: true
-      });
+      this.setState(
+        {
+          audioInfo: this.props.navigation.state.params.audioInfo,
+          isAudioReady: true
+        },
+        () => {
+          console.log(this.state.audioInfo);
+        }
+      );
     }
-  };
+  }; */
 
   onAudioPlayerError = (error) => {
     console.log({ error });
   };
 
-  onCloseAudioPlayer=()=>{
-      this.props.navigation.goBack()
-  }
+  onCloseAudioPlayer = () => {
+    this.props.navigation.goBack();
+  };
 
   render = () => {
-    
     return (
       <Container
         style={{
           backgroundColor: `${BACKGROUND_COLOR}`
         }}
       >
+      
         <AudioPlayer
-         /* source={{
+        audioInfo={this.state.audioInfo}
+          source={{
             uri: this.state.audioInfo.uri
-          }}  */
+          }}
           debug={true}
-        closeAudioPlayerButton={(renderProps) => {
+          closeAudioPlayerButton={(renderProps) => {
             return (
               <Button
                 onPress={() => {
@@ -126,10 +107,11 @@ class PlayAudioScreen extends React.Component {
                 <Text>Go Back</Text>
               </Button>
             );
-          }}/>
-        </Container>
+          }}
+        />
+      </Container>
     );
-  }
+  };
 }
 
 export default withNavigation(PlayAudioScreen);

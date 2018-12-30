@@ -14,7 +14,6 @@ import * as styles from './styles';
 // the amount of time fast forward or rewind moves within the audio clip
 const SOUND_JUMP_MILLIS = 5000;
 
-
 const formattedSeconds = (millis) => {
   const totalSeconds = millis / 1000;
   const seconds = Math.floor(totalSeconds % 60);
@@ -40,37 +39,25 @@ export default class AudioPlayer extends Component {
       secondsElapsed: 0,
       audioInfo: {},
       debugStatements: 'debug info will appear here',
-      isAudioReady: true
+      isAudioReady: false
     };
     this.sound = null;
   }
 
   componentDidMount = async () => {
-    this.sound = new Audio.Sound();
-    try {
-      this.sound.setOnPlaybackStatusUpdate(
-        this.onPlaybackStatusUpdate.bind(this)
-      );
-      let playbackSoundInfo = await this.sound.loadAsync({
-        uri: this.props.source.uri
-      });
-      console.log({ playbackSoundInfo });
-      this.setState({ playbackSoundInfo });
-    } catch (error) {
-      this.props.onError &&
-        this.props.onError({ 'onPlayPress loadAsync error': error });
-    }
+    console.log('mounting player');
+    console.log('source: ', this.props);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (this.props.audioInfo && !prevProps.props.audioInfo) {
+    if (this.props.source !== prevProps.source) {
       this.setState(
         {
           audioInfo: this.props.audioInfo,
-          isAudioReady: true
+          source: this.props.source
         },
         () => {
-          console.log({ 'AudioPlayer state ': this.state });
+          this.loadSound();
         }
       );
     }
@@ -82,26 +69,21 @@ export default class AudioPlayer extends Component {
     }
   };
 
-  showPermissionsAlert = () => {
-    Alert.alert(
-      this.props.permissionsAlert.title,
-      this.props.permissionsAlert.message,
-      [
-        {
-          text: this.props.permissionsAlert.tryAgainText,
-          onPress: () => {
-            this.askForPermissions();
-          }
-        },
-        {
-          text: this.props.permissionsAlert.doNotTryAgainText,
-          onPress: () => {
-            this.props.denyPermissionRequestCallback();
-          }
-        }
-      ],
-      { cancelable: true }
-    );
+  loadSound = async () => {
+    this.sound = new Audio.Sound();
+    try {
+      this.sound.setOnPlaybackStatusUpdate(
+        this.onPlaybackStatusUpdate.bind(this)
+      );
+      let playbackSoundInfo = await this.sound.loadAsync({
+        uri: this.props.source.uri
+      });
+      console.log({ playbackSoundInfo });
+      this.setState({ isAudioReady: true, playbackSoundInfo });
+    } catch (error) {
+      this.props.onError &&
+        this.props.onError({ 'onPlayPress loadAsync error': error });
+    }
   };
 
   /*
@@ -252,7 +234,7 @@ export default class AudioPlayer extends Component {
     this.props.onError && this.props.onError({ replayAsyncRes });
   };
 
-  onFastForwardPressed=async()=>{
+  onFastForwardPressed = async () => {
     try {
       this.props.debug && console.log('in onFastForwardPressed');
       let status = await this.sound.getStatusAsync();
@@ -268,9 +250,9 @@ export default class AudioPlayer extends Component {
     } catch (error) {
       this.props.debug && console.log({ error });
     }
-  }
+  };
 
-  onRewindPressed=async()=>{
+  onRewindPressed = async () => {
     this.props.debug && console.log('in onRewindPressed');
     try {
       let status = await this.sound.getStatusAsync();
@@ -283,7 +265,7 @@ export default class AudioPlayer extends Component {
     } catch (error) {
       this.props.debug && console.log({ error });
     }
-  }
+  };
 
   renderPlaybackTimer = () => {
     return this.props.playbackTimer({
@@ -398,7 +380,7 @@ export default class AudioPlayer extends Component {
         <View
           style={{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'row'
             /* justifyContent: 'space-evenly' */
           }}
         >
@@ -417,11 +399,10 @@ export default class AudioPlayer extends Component {
                 onPress: this.onPausePress
               })
             : null}
-             {this.props.fastForwardButton({
+          {this.props.fastForwardButton({
             onPress: this.onFastForwardPressed,
             isAudioReady: this.state.isAudioReady
           })}
-         
         </View>
         {this.props.closeAudioPlayerButton({
           onPress: () => {},
@@ -516,9 +497,9 @@ AudioPlayer.defaultProps = {
   fastForwardButton: (renderProps) => {
     return (
       <TouchableOpacity
-      style={styles.defaultTouchableHighlight}
-      onPress={renderProps.onPress}
-      underlayColor="#E0E0E0"
+        style={styles.defaultTouchableHighlight}
+        onPress={renderProps.onPress}
+        underlayColor="#E0E0E0"
       >
         <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{'>>'}</Text>
       </TouchableOpacity>
@@ -527,9 +508,9 @@ AudioPlayer.defaultProps = {
   rewindButton: (renderProps) => {
     return (
       <TouchableOpacity
-      style={styles.defaultTouchableHighlight}
-      onPress={renderProps.onPress}
-      underlayColor="#E0E0E0"
+        style={styles.defaultTouchableHighlight}
+        onPress={renderProps.onPress}
+        underlayColor="#E0E0E0"
       >
         <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{'<<'}</Text>
       </TouchableOpacity>

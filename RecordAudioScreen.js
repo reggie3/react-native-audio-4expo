@@ -1,13 +1,8 @@
 import React from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { Text, Button, Container, Icon } from 'native-base';
+import { Text, Button, Container } from 'native-base';
 import { withNavigation } from 'react-navigation';
 import { AudioRecorder } from './index';
 import { Audio } from 'expo';
-import * as styles from './styles';
-
-
-const ICON_SIZE = 40;
 
 const random_rgba = () => {
   var o = Math.round,
@@ -84,7 +79,7 @@ class RecordAudioScreen extends React.Component {
           }}
           showRecorderTimer={true}
           showPlaybackTimer={true}
-          debug={true}
+          debug={false}
           /* permissionsAlert={{
           display: true,
           title:  'Permissions Required',

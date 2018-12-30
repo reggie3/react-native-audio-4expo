@@ -143,7 +143,7 @@ export default class AudioRecorder extends Component {
 
   // update the status and progress of recording
   updateRecordingStatus = (status) => {
-    this.props.onError && this.props.onError({ 'updateRecordingStatus: ': status });
+    this.props.debug && console.log({ 'updateRecordingStatus: ': status });
 
     if (!status.isRecording) {
       this.setState({
@@ -309,7 +309,7 @@ export default class AudioRecorder extends Component {
   Function used to update the UI during playback
   */
   onPlaybackStatusUpdate = async (playbackStatus) => {
-    this.props.onError && this.props.onError({ onPlaybackStatusUpdate: playbackStatus });
+    this.props.debug && console.log({ onPlaybackStatusUpdate: playbackStatus });
 
     if (playbackStatus.error) {
       this.props.onError && this.props.onError(playbackStatus.error);
@@ -470,10 +470,10 @@ export default class AudioRecorder extends Component {
         let playFromPositionAsyncRes = await this.sound.playFromPositionAsync(
           this.state.pausedPosition
         );
-        this.props.onError && this.props.onError({ playFromPositionAsyncRes });
+        this.props.debug && console.log({ playFromPositionAsyncRes });
       } else {
         let playAsyncRes = await this.sound.playAsync();
-        this.props.onError && this.props.onError({ playAsyncRes });
+        this.props.debug && console.log({ playAsyncRes });
       }
       this.setState({ isPlaying: true, isPaused: false });
     } catch (error) {
@@ -551,14 +551,14 @@ export default class AudioRecorder extends Component {
         });
       }
       let pauseAsyncRes = await this.videoRef.pauseAsync();
-      this.props.onError && this.props.onError({ pauseAsyncRes });
+      this.props.debug && console.log({ pauseAsyncRes });
     } catch (error) {
       this.props.onError && this.props.onError({ error });
     }
   };
 
   changePlaybackLocation = async (value) => {
-    this.props.onError && this.props.onError({ value });
+    this.props.debug && console.log({ value });
     this.props.onError &&
       console.log({ tempDurationMillis: this.state.tempDurationMillis });
     try {
@@ -566,11 +566,11 @@ export default class AudioRecorder extends Component {
         positionMillis: value,
         durationMillis: this.state.tempDurationMillis
       });
-      this.props.onError && this.props.onError({ setStatusAsyncRes });
-      this.props.onError && this.props.onError(this.state);
+      this.props.debug && console.log({ setStatusAsyncRes });
+      this.props.debug && console.log(this.state);
 
       let playAsyncRes = await this.videoRef.playAsync();
-      this.props.onError && this.props.onError({ playAsyncRes });
+      this.props.debug && console.log({ playAsyncRes });
 
       this.setState({ tempDurationMillis: null });
     } catch (error) {

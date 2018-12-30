@@ -51,10 +51,13 @@ class HomeScreen extends React.Component {
         this.props.navigation.state.params.audioInfo !==
           prevProps.navigation.state.params.audioInfo)
     ) {
-      console.log(this.props.navigation.state.params.audioInfo);
+        
       this.setState({
         audioInfo: this.props.navigation.state.params.audioInfo,
         isAudioReady: true
+      },()=>{
+        console.log('============== Homescreen state ===================');
+        console.log(this.state);
       });
     }
   };
