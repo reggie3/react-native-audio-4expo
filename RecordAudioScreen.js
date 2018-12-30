@@ -6,6 +6,9 @@ import { AudioRecorder } from './index';
 import { Audio } from 'expo';
 import * as styles from './styles';
 
+
+const ICON_SIZE = 40;
+
 const random_rgba = () => {
   var o = Math.round,
     r = Math.random,
@@ -79,6 +82,8 @@ class RecordAudioScreen extends React.Component {
             console.log('request for permissions denied');
             this.props.navigation.goBack();
           }}
+          showRecorderTimer={true}
+          showPlaybackTimer={true}
           /* permissionsAlert={{
           display: true,
           title:  'Permissions Required',
@@ -138,60 +143,23 @@ class RecordAudioScreen extends React.Component {
                 <Text>Go Back</Text>
               </Button>
             );
-          }}/*
-          flashOnButton={(renderProps) => {
+          }}/* playButton={(renderProps) => {
             return (
               <Button
-                onPress={() => {
-                  renderProps.onPress();
-                }}
-                info
-                style={styles.flashButtonStyle}
+                onPress={renderProps.onPress}
+                success
+                style={styles.bigButtonStyle}
               >
-                <Icon type="MaterialIcons" name="flash-on" />
+                <Icon
+                  type="FontAwesome"
+                  name="play"
+                  color="white"
+                  style={{ fontSize: ICON_SIZE }}
+                />
               </Button>
             );
-          }}
-          flashOffButton={(renderProps) => {
-            return (
-              <Button
-                onPress={() => {
-                  renderProps.onPress();
-                }}
-                info
-                style={styles.flashButtonStyle}
-              >
-                <Icon type="MaterialIcons" name="flash-off" />
-              </Button>
-            );
-          }}
-          flashAutoButton={(renderProps) => {
-            return (
-              <Button
-                onPress={() => {
-                  renderProps.onPress();
-                }}
-                info
-                style={styles.flashButtonStyle}
-              >
-                <Icon type="MaterialIcons" name="flash-auto" />
-              </Button>
-            );
-          }}
-          flashTorchButton={(renderProps) => {
-            return (
-              <Button
-                onPress={() => {
-                  renderProps.onPress();
-                }}
-                info
-                style={styles.flashButtonStyle}
-              >
-                <Icon type="MaterialIcons" name="highlight" />
-              </Button>
-            );
-          }}
-          showTimer={true}
+          }} 
+          
           timerComponent={(renderProps) => {
             return (
               <View style={{ background: 'rgba(0,0,0,.5' }}>

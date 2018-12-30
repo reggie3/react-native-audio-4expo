@@ -35,7 +35,6 @@ class HomeScreen extends React.Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-      debugger;
     if (this.state.audioInfo !== prevState.audioInfo) {
       console.log('audio has updated');
       // do checks to see if the audio is valid and update isAudioReady
