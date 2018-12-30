@@ -1,17 +1,13 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "index.js",
   "private": false,
   "name": "react-native-audio-4expo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Provides audio recorder and player components using the Expo SDK.",
   "dependencies": {
-    "expo": "^31.0.4",
-    "native-base": "2.8.0",
     "prop-types": "15.6.1",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz",
     "react-native-blink-view": "0.0.6",
-    "react-navigation": "^2.18.2"
+    "native-base": "2.8.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -47,14 +43,7 @@
     "type": "git",
     "url": "git+https://github.com/reggie3/react-native-audio-4expo.git"
   },
-  "keywords": [
-    "react-native",
-    "expo.io",
-    "audio",
-    "player",
-    "recorder",
-    "javascript"
-  ],
+  "keywords": ["react-native", "expo.io", "audio", "player", "recorder", "javascript"],
   "author": "Reginald Johnson",
   "license": "MIT",
   "bugs": {
