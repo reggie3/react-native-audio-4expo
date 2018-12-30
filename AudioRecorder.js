@@ -49,6 +49,7 @@ export default class AudioRecorder extends Component {
     this.recording = null;
     this.state = {
       isRecording: false,
+      isRecordingAvailable: false,
       error: null,
       hasPermissions: false,
       showRecorder: false,
@@ -269,7 +270,8 @@ export default class AudioRecorder extends Component {
     try {
       await Audio.setAudioModeAsync(this.props.audioMode);
       this.setState({
-        recordStatus: 'RECORDING_COMPLETE'
+        recordStatus: 'RECORDING_COMPLETE',
+        isRecordingAvailable: true
       });
     } catch (error) {
       console.log({ 'Error: Audio.setAudioModeAsync': error });
@@ -318,29 +320,14 @@ export default class AudioRecorder extends Component {
         try {
           await this.sound.unloadAsync();
           this.playAudio();
-          /* let sound = new Audio.Sound();
-          sound.setOnPlaybackStatusUpdate(
-            this.onPlaybackStatusUpdate.bind(this)
-          );
-          debugger;
-          await this.sound.unloadAsync();
-          let playbackSoundInfo = await sound.loadAsync({
-            uri: this.state.audioInfo.uri
-          });
-          this.props.onError && this.props.onError({ playbackSoundInfo });
-
-          this.sound = sound;
-          let playAsyncRes = await sound.playAsync();
-          this.props.onError && this.props.onError({ playAsyncRes });
-          this.setState({ playbackSoundInfo });
-          debugger; */
         } catch (error) {
-          console.log({ 'reseting audio error': error });
-          debugger;
+          this.props.onError && this.props.onError({ unloadAsync: error });
         }
       } else {
-        console.log(playbackStatus.error);
-        debugger;
+        this.props.onError &&
+          this.props.onError({
+            'Unknown playbackStatus error': playbackStatus.error
+          });
       }
     } else {
       if (this.state.recordStatus !== 'RECORDING') {
@@ -350,6 +337,10 @@ export default class AudioRecorder extends Component {
             // Send Expo team the error on Slack or the forums so we can help you debug!
             this.setState({
               playStatus: 'ERROR'
+            });
+            this.props.onError &&
+            this.props.onError({
+              'Unknown playbackStatus error': playbackStatus.error
             });
           }
         } else {
@@ -419,7 +410,8 @@ export default class AudioRecorder extends Component {
           this.props.onComplete(this.state.soundFileInfo);
         });
       } catch (error) {
-        this.props.onError && this.props.onError({ 'Error: unloadAsync': error });
+        this.props.onError &&
+          this.props.onError({ 'Error: unloadAsync': error });
       }
       // clear the status update object if the sound hasn't already been set to null
       if (this.sound.hasOwnProperty('setOnPlaybackStatusUpdate')) {
@@ -477,7 +469,8 @@ export default class AudioRecorder extends Component {
       }
       this.setState({ isPlaying: true, isPaused: false });
     } catch (error) {
-      this.props.onError && this.props.onError({ 'onPlayPress playAsync error': error });
+      this.props.onError &&
+        this.props.onError({ 'onPlayPress playAsync error': error });
     }
   };
 
@@ -672,7 +665,8 @@ export default class AudioRecorder extends Component {
         {this.props.closeAudioRecorderButton({
           onPress: () => {},
           audioInfo: this.state.audioInfo,
-          isRecording: this.state.isRecording
+          isRecording: this.state.isRecording,
+          isRecordingAvailable: this.state.isRecordingAvailable
         })}
       </View>
     );
@@ -685,7 +679,7 @@ export default class AudioRecorder extends Component {
           <>
             {this.renderTopControls()}
             {this.renderMiddleControls()}
-            {this.renderBottomControls()}    
+            {this.renderBottomControls()}
           </>
         ) : (
           <View
@@ -754,8 +748,6 @@ AudioRecorder.propTypes = {
   playButton: PropTypes.func,
   pauseButton: PropTypes.func,
   resetButton: PropTypes.func,
-
-
 
   // recordingSettings: an object matching Expo.Camera recording options
   // see here: https://docs.expo.io/versions/v31.0.0/sdk/camera#recordasync

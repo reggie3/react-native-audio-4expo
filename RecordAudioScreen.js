@@ -133,10 +133,21 @@ class RecordAudioScreen extends React.Component {
                 }}
                 disabled={renderProps.isRecording}
                 block
-                info={!renderProps.isRecording}
+                info={
+                  !renderProps.isRecording &&
+                  !renderProps.isRecordingAvailable
+                }
+                success={
+                  !renderProps.isRecording &&
+                  renderProps.isRecordingAvailable
+                }
                 style={{ margin: 5 }}
               >
-                <Text>Go Back</Text>
+                <Text >
+                  {renderProps.isRecordingAvailable
+                    ? 'Save Recording'
+                    : 'Go Back'}
+                </Text>
               </Button>
             );
           }}/* playButton={(renderProps) => {

@@ -2,7 +2,7 @@
   "main": "index.js",
   "private": false,
   "name": "react-native-audio-4expo",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "Provides audio recorder and player components using the Expo SDK.",
   "dependencies": {
     "prop-types": "15.6.1",
