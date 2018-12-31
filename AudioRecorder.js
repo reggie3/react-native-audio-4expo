@@ -705,7 +705,7 @@ AudioRecorder.propTypes = {
   showTimeStamp: PropTypes.bool,
   showPlaybackSlider: PropTypes.bool,
   showRecorderSlider: PropTypes.bool,
-  showDebug: PropTypes.bool,
+  debug: PropTypes.bool,
   showBackButton: PropTypes.bool,
   resetButton: PropTypes.func,
   recordingCompleteButton: PropTypes.func,
@@ -760,7 +760,8 @@ AudioRecorder.propTypes = {
 
   // sliders for both recording and playback
   recordingSlider: PropTypes.func,
-  playbackSlider: PropTypes.func
+  playbackSlider: PropTypes.func,
+  debug: false
 };
 
 AudioRecorder.defaultProps = {

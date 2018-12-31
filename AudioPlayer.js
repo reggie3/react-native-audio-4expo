@@ -46,20 +46,15 @@ export default class AudioPlayer extends Component {
 
   componentDidMount = async () => {
     console.log('mounting player');
-    console.log('source: ', this.props);
+    console.log({ 'this.props: ': this.props });
+    if (this.props.source.uri) {
+      this.loadSound();
+    }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
     if (this.props.source !== prevProps.source) {
-      this.setState(
-        {
-          audioInfo: this.props.audioInfo,
-          source: this.props.source
-        },
-        () => {
-          this.loadSound();
-        }
-      );
+      this.loadSound();
     }
   };
 
@@ -286,7 +281,10 @@ export default class AudioPlayer extends Component {
           top: 0,
           left: 0,
           right: 0,
-          padding: 15
+          padding: 15,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
         {this.props.resetButton({
@@ -380,8 +378,8 @@ export default class AudioPlayer extends Component {
         <View
           style={{
             display: 'flex',
-            flexDirection: 'row'
-            /* justifyContent: 'space-evenly' */
+            flexDirection: 'row',
+          justifyContent: 'space-evenly'
           }}
         >
           {this.props.rewindButton({
@@ -404,10 +402,12 @@ export default class AudioPlayer extends Component {
             isAudioReady: this.state.isAudioReady
           })}
         </View>
-        {this.props.closeAudioPlayerButton({
-          onPress: () => {},
-          audioInfo: this.state.audioInfo
-        })}
+        {this.props.showCloseButton
+          ? this.props.closeAudioPlayerButton({
+              onPress: () => {},
+              audioInfo: this.state.audioInfo
+            })
+          : null}
       </View>
     );
   };
@@ -452,12 +452,15 @@ AudioPlayer.propTypes = {
 
   // showTimer: show a timer while playing
   showPlaybackTimer: PropTypes.bool,
+  
   // showPlaybackSlider: show a slider while playing
   showPlaybackSlider: PropTypes.bool,
   // timer: function returning component to render as timeStamp
   playbackTimer: PropTypes.func,
   // slider: function returning component to render as playback slider
-  playbackSlider: PropTypes.func
+  playbackSlider: PropTypes.func,
+
+  debug: PropTypes.bool
 };
 
 AudioPlayer.defaultProps = {
@@ -534,6 +537,7 @@ AudioPlayer.defaultProps = {
       </TouchableOpacity>
     );
   },
+  showCloseButton: true,
   closeAudioPlayerButton: ({ onPress }) => {
     return (
       <TouchableOpacity
@@ -567,5 +571,6 @@ AudioPlayer.defaultProps = {
         disabled={renderProps.disabled}
       />
     );
-  }
+  },
+  debug: false
 };
